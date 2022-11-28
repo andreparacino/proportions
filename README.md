@@ -13,6 +13,9 @@ You can try and test the app [here](https://ratios.netlify.app/).
 ### Structure
 
 The project runs on **React + TypeScript** and to style it I went **CSS Modules + SASS + SUIT CSS naming convention**, a solution that served me very well in the past years.
+
 Any routing (as well as state-management) library was clearly unnecessary considering the very contained dimensions of this project.
+
 I used **absolute paths** for imports (no other way to go IMO :p).
+
 The choice of wrapping basically every value or function within a useMemo/useCallback hook is dictated by my past years of working in teams led by seniors that thought this was the only correct way, because "5 rerenders is always better than 10", but I really think that in some cases the constant dependency check makes the app actually slower (imagine having a loooong list of deps for an overall easy function to re-declare at each rerender).
