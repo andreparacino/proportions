@@ -89,6 +89,7 @@ const Proportion = () => {
 
   useEffect(
     () =>
+      // The placeholders assignment to the correct input needs to change based on the number and position of the existing values, so that theoretically the last unknown value is going to be the x.
       members
         .filter((member) => !existingValues?.includes(member))
         .forEach((_member, index) => {
