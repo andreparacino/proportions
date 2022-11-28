@@ -1,0 +1,46 @@
+@import "shared/styles/_utilities.scss";
+@import "shared/styles/_breakpoints.scss";
+@import "shared/styles/_colors.scss";
+@import "shared/styles/_constants.scss";
+
+.Proportion {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 20px;
+  align-items: center;
+
+  &-decimalsFilter {
+    > span {
+      font-size: rem(18px);
+    }
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    background-color: $color-peppermint;
+    padding: 8px;
+    border-radius: $borderRadius;
+  }
+
+  &-europeanLayout {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+  }
+
+  @include tablet {
+    justify-content: space-between;
+    height: 100%;
+    height: fit-content;
+    gap: 70px;
+    flex-direction: column;
+
+    &-europeanLayout {
+      flex-direction: row;
+      gap: 30px;
+    }
+  }
+}

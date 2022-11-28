@@ -1,0 +1,55 @@
+@import "shared/styles/_colors.scss";
+@import "shared/styles/_constants.scss";
+@import "shared/styles/_utilities.scss";
+
+.ValueBox {
+  appearance: none;
+  -webkit-appearance: none;
+  all: unset;
+  display: flex;
+  align-items: center;
+  background-color: $color-peppermint;
+  color: $color-cello;
+  border-radius: $borderRadius;
+  width: auto;
+  padding: 12px 20px;
+  text-align: center;
+  transition: width 0.07s, margin 0.4s, box-shadow 0.25s, background-color 0.25s,
+    color 0.1s, font-size 0.25s, transform 0.2s;
+  font-size: rem(32px);
+  margin: 0 1px;
+
+  &::placeholder {
+    font-size: 32px;
+    transition: color 0.1s;
+  }
+
+  &:hover,
+  &:focus {
+    box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
+      rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+  }
+
+  &:hover:not(&:focus) {
+    transform: translateY(-4px);
+  }
+
+  &--invalid {
+    background-color: $color-amaranth;
+    color: $color-peppermint;
+
+    &::placeholder {
+      color: $color-peppermint;
+    }
+  }
+
+  &--isResult {
+    background-color: $color-cello;
+    color: white;
+    margin: 0 18px;
+  }
+
+  &--resultFound:not(&--isResult) {
+    font-size: rem(26px);
+  }
+}

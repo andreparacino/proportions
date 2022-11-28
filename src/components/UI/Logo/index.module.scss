@@ -1,0 +1,19 @@
+@import "shared/styles/_breakpoints.scss";
+
+.Logo {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+
+  img {
+    width: 100px;
+  }
+
+  @include tablet {
+    justify-content: center;
+
+    img {
+      width: 190px;
+    }
+  }
+}

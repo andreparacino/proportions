@@ -1,0 +1,13 @@
+@import "./_utilities.scss";
+
+.u-fadeIn {
+  opacity: 0.8 !important;
+  visibility: visible;
+  transition: visibility 0.3s, opacity 0.3s;
+}
+
+.u-fadeOut {
+  opacity: 0 !important;
+  visibility: hidden;
+  transition: visibility 0.3s, opacity 0.3s;
+}
