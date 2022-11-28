@@ -1,46 +1,18 @@
-# Getting Started with Create React App
+# Ratios
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+The easiest way to calculate proportions!
 
-## Available Scripts
+Let's say a recipe says to use 50g of flour per 750ml of milk, and you want to know how many mls of milk you'll need having 64g of flour, the math should look something like this:  
+**_50_** **_: 750 = 64 : x_** (an alternative way to write it would be **\*50/\*\*\*\***750 = 64/x**_ )  
+That eventually, running the math would result to:  
+_**x = (750 \* 64) / 50**\* \***x = 960\*\*\*
 
-In the project directory, you can run:
+**Ratios** does exactly that! just in a user friendly and "smooth" way. It also allows you to choose the precision (specifying the amount of decimals after the comma).
+You can try and test the app [here](https://ratios.netlify.app/).
 
-### `npm start`
+### Structure
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+The project runs on **React + TypeScript** and to style it I went **CSS Modules + SASS + SUIT CSS naming convention**, a solution that served me very well in the past years.
+Any routing (as well as state-management) library was clearly unnecessary considering the very contained dimensions of this project.
+I used **absolute paths** for imports (no other way to go IMO :p).
+The choice of wrapping basically every value or function within a useMemo/useCallback hook is dictated by my past years of working in teams led by seniors that thought this was the only correct way, because "5 rerenders is always better than 10", but I really think that in some cases the constant dependency check makes the app actually slower (imagine having a loooong list of deps for an overall easy function to re-declare at each rerender).
