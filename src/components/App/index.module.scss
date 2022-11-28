@@ -3,15 +3,17 @@
 
 .App {
   background-color: $color-acqua;
-  padding: 35px 0;
+  padding: 25px;
   width: 100vw;
   height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
   align-items: center;
+  gap: 50px;
 
   @include tablet {
+    justify-content: flex-start;
     padding: 50px 0;
+    gap: 100px;
   }
 }

@@ -10,7 +10,7 @@ import {
 import { MATH_SYMBOL, MEMBER, VARIABLE_SYMBOL } from "shared/enums";
 import { evaluateProportion } from "shared/helpers/utilities";
 import styles from "./index.module.scss";
-import PilledRadioGroup from "components/UI/PilledRadioGroup";
+import Slider from "components/UI/Slider";
 
 const { FIRST_MEMBER, SECOND_MEMBER, THIRD_MEMBER, FOURTH_MEMBER } = MEMBER;
 const members = Object.values(MEMBER);
@@ -19,13 +19,6 @@ const { COLON, EQUAL } = MATH_SYMBOL;
 
 const { X, Y, Z, W } = VARIABLE_SYMBOL;
 const symbols = Object.values(VARIABLE_SYMBOL);
-
-const precisionOptions = [
-  { label: "1", value: "1" },
-  { label: "2", value: "2" },
-  { label: "3", value: "3" },
-  { label: "4", value: "4" },
-];
 
 const Proportion = () => {
   const [values, setValues] = useState<{
@@ -45,7 +38,7 @@ const Proportion = () => {
     [FOURTH_MEMBER]: W,
   });
 
-  const [allowedDecimals, setAllowedDecimals] = useState("2");
+  const [allowedDecimals, setAllowedDecimals] = useState(2);
 
   const existingValues = useMemo(
     () => Object.keys(values).filter((key) => !!values[key as MEMBER]),
@@ -110,12 +103,10 @@ const Proportion = () => {
   return (
     <section className={styles.Proportion} onChange={handleInput}>
       <section className={styles["Proportion-decimalsFilter"]}>
-        <span>Allowed decimals:</span>
-        <PilledRadioGroup
-          optionsData={precisionOptions}
-          defaultValue={allowedDecimals}
-          handleChange={(value) => setAllowedDecimals(value)}
-        />
+        <span>
+          Precision (<strong>decimals</strong>):
+        </span>
+        <Slider onChange={(value) => setAllowedDecimals(value)} />
       </section>
       <section className={styles["Proportion-europeanLayout"]}>
         {members.map((member, index) => (
