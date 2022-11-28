@@ -1,5 +1,6 @@
 import Proportion from "components/Proportion";
 import ErrorOverlay from "components/UI/ErrorOverlay";
+import Logo from "components/UI/Logo";
 import React, { createContext, Dispatch } from "react";
 import { useState } from "react";
 import styles from "./index.module.scss";
@@ -21,6 +22,7 @@ function App() {
   return (
     <main className={styles.App}>
       <AppContext.Provider value={value}>
+        <Logo />
         <Proportion />
         <ErrorOverlay />
       </AppContext.Provider>
