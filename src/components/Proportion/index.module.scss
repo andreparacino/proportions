@@ -1,11 +1,12 @@
 @import "shared/styles/_utilities.scss";
+@import "shared/styles/_breakpoints.scss";
 
 .Proportion {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  height: 50%;
+  height: 100%;
   gap: 40px;
 
   &-decimalsFilter {
@@ -22,7 +23,17 @@
   &-europeanLayout {
     width: 100%;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 30px;
+    gap: 15px;
+
+    @include tablet {
+      flex-direction: row;
+      gap: 30px;
+    }
+  }
+
+  @include tablet {
+    height: 50%;
   }
 }
