@@ -1,0 +1,28 @@
+@import "shared/styles/_utilities.scss";
+
+.Proportion {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  height: 50%;
+  gap: 40px;
+
+  &-decimalsFilter {
+    > span {
+      font-size: rem(18px);
+    }
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+  &-europeanLayout {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+  }
+}

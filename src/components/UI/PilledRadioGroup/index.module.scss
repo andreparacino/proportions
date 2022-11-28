@@ -1,0 +1,42 @@
+@import "shared/styles/colors";
+@import "shared/styles/utilities";
+
+.PilledRadioGroup {
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  height: 50px;
+  padding: 0 6px;
+  font-size: rem(18px);
+  font-weight: bold;
+  border-radius: 30px;
+  border: 1px solid $color-peppermint;
+
+  input[type="radio"] {
+    display: none;
+
+    &:checked + label {
+      padding: 8px 14px;
+      border-radius: 22px;
+      background-color: $color-peppermint;
+      color: black;
+      &:last-of-type {
+        margin-right: 0px;
+      }
+      &:first-of-type {
+        margin-left: 0px;
+      }
+    }
+  }
+
+  label {
+    cursor: pointer;
+    margin: 0 7px;
+    color: $color-rum;
+    transition: all 0.2s;
+
+    &:hover {
+      color: $color-mine-shaft;
+    }
+  }
+}
