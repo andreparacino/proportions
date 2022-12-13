@@ -64,8 +64,7 @@ const ValueBox = ({
 
   return (
     <input
-      inputMode="numeric"
-      pattern="[0-9]*"
+      type="text"
       className={classNames}
       style={{ width: inputWidth }}
       value={value}
