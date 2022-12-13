@@ -64,16 +64,17 @@ const ValueBox = ({
 
   return (
     <input
-      name={name}
-      autoComplete={"off"}
-      style={{ width: inputWidth }}
-      type="text"
+      inputMode="numeric"
+      pattern="[0-9]*"
       className={classNames}
+      style={{ width: inputWidth }}
       value={value}
-      autoFocus={isFirst}
+      name={name}
       placeholder={placeholder}
-      disabled={isResult}
       onChange={handleChange}
+      autoComplete={"off"}
+      autoFocus={isFirst}
+      disabled={isResult}
     />
   );
 };
