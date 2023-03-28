@@ -8,9 +8,10 @@ import {
   useState,
 } from "react";
 import { MATH_SYMBOL, MEMBER, VARIABLE_SYMBOL } from "shared/enums";
-import { evaluateProportion } from "shared/helpers/utilities";
+import { getResult } from "shared/helpers/utilities";
 import styles from "./index.module.scss";
 import Slider from "components/UI/Slider";
+import { DisabledInput } from "shared/helpers/types";
 
 const { FIRST_MEMBER, SECOND_MEMBER, THIRD_MEMBER, FOURTH_MEMBER } = MEMBER;
 const members = Object.values(MEMBER);
@@ -21,17 +22,15 @@ const { X, Y, Z, W } = VARIABLE_SYMBOL;
 const symbols = Object.values(VARIABLE_SYMBOL);
 
 const Proportion = () => {
-  const [values, setValues] = useState<{
-    [key in MEMBER]: string | null;
-  }>({
+  const [values, setValues] = useState<Record<MEMBER, string | null>>({
     [FIRST_MEMBER]: null,
     [SECOND_MEMBER]: null,
     [THIRD_MEMBER]: null,
     [FOURTH_MEMBER]: null,
   });
-  const [placeholders, setPlaceholders] = useState<{
-    [key in MEMBER]: VARIABLE_SYMBOL;
-  }>({
+  const [placeholders, setPlaceholders] = useState<
+    Record<MEMBER, VARIABLE_SYMBOL>
+  >({
     [FIRST_MEMBER]: X,
     [SECOND_MEMBER]: Y,
     [THIRD_MEMBER]: Z,
@@ -46,36 +45,17 @@ const Proportion = () => {
   );
 
   const disabledInput = useMemo(
-    () => ({
+    (): DisabledInput => ({
       isDisabled: existingValues.length === 3,
       instance: Object.keys(values).find((key) => !values[key as MEMBER]),
     }),
     [existingValues.length, values]
   );
 
-  const result = useMemo(() => {
-    if (!disabledInput.isDisabled) return null;
-    switch (disabledInput.instance) {
-      case FIRST_MEMBER:
-      case FOURTH_MEMBER:
-        return evaluateProportion({
-          toMultiply: [values[SECOND_MEMBER], values[THIRD_MEMBER]],
-          toDivide: [values[FIRST_MEMBER], values[FOURTH_MEMBER]],
-          precision: +allowedDecimals,
-        });
-      default:
-        return evaluateProportion({
-          toMultiply: [values[FIRST_MEMBER], values[FOURTH_MEMBER]],
-          toDivide: [values[SECOND_MEMBER], values[THIRD_MEMBER]],
-          precision: +allowedDecimals,
-        });
-    }
-  }, [
-    disabledInput.isDisabled,
-    disabledInput.instance,
-    values,
-    allowedDecimals,
-  ]);
+  const result = useMemo(
+    () => getResult(disabledInput, values, allowedDecimals),
+    [disabledInput, values, allowedDecimals]
+  );
 
   const handleInput = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     const event = e.target;
@@ -119,7 +99,7 @@ const Proportion = () => {
                 disabledInput.isDisabled && disabledInput.instance === member
               }
               isFirst={index === 0}
-              resultFound={!!result || result === 0}
+              resultFound={typeof result === "number"}
               placeholder={placeholders[member]}
               onChange={handleInput}
             />
