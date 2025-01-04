@@ -1,5 +1,5 @@
-import { MEMBER } from "shared/enums";
-import { DisabledInput, TypeOrNull } from "shared/helpers/types";
+import { MEMBER } from "@/shared/enums";
+import { DisabledInput, TypeOrNull } from "@/shared/helpers/types";
 
 const { FIRST_MEMBER, SECOND_MEMBER, THIRD_MEMBER, FOURTH_MEMBER } = MEMBER;
 

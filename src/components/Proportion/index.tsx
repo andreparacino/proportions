@@ -1,4 +1,4 @@
-import ValueBox from "components/UI/ValueBox";
+import ValueBox from "@/components/UI/ValueBox";
 import {
   ChangeEvent,
   Fragment,
@@ -7,11 +7,11 @@ import {
   useMemo,
   useState,
 } from "react";
-import { MATH_SYMBOL, MEMBER, VARIABLE_SYMBOL } from "shared/enums";
-import { getResult } from "shared/helpers/utilities";
+import { MATH_SYMBOL, MEMBER, VARIABLE_SYMBOL } from "@/shared/enums";
+import { getResult } from "@/shared/helpers/utilities";
 import styles from "./index.module.scss";
-import Slider from "components/UI/Slider";
-import { DisabledInput } from "shared/helpers/types";
+import Slider from "@/components/UI/Slider";
+import { DisabledInput } from "@/shared/helpers/types";
 
 const { FIRST_MEMBER, SECOND_MEMBER, THIRD_MEMBER, FOURTH_MEMBER } = MEMBER;
 const members = Object.values(MEMBER);

@@ -1,4 +1,4 @@
-import { AppContext } from "components/App";
+import { AppContext } from "@/components/App";
 import {
   ChangeEvent,
   useCallback,
@@ -7,8 +7,8 @@ import {
   useMemo,
   useState,
 } from "react";
-import { ERROR, MEMBER } from "shared/enums";
-import { useClassNames } from "shared/hooks";
+import { ERROR, MEMBER } from "@/shared/enums";
+import { useClassNames } from "@/shared/hooks";
 import styles from "./index.module.scss";
 
 interface ValueBoxProps {

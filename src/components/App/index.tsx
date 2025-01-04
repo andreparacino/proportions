@@ -1,9 +1,9 @@
-import Proportion from "components/Proportion";
-import ErrorOverlay from "components/UI/ErrorOverlay";
-import Logo from "components/UI/Logo";
+import ErrorOverlay from "@/components/UI/ErrorOverlay";
+import Logo from "@/components/UI/Logo";
 import React, { createContext, Dispatch } from "react";
 import { useState } from "react";
 import styles from "./index.module.scss";
+import Proportion from "@/components/Proportion";
 
 interface AppContextInterface {
   displayedError: string | null;

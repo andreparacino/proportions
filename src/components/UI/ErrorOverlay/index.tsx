@@ -1,8 +1,8 @@
-import { AppContext } from "components/App";
+import { AppContext } from "@/components/App";
 import { useContext, useEffect, useState } from "react";
-import { useClassNames } from "shared/hooks";
+import { useClassNames } from "@/shared/hooks";
 import styles from "./index.module.scss";
-import utilities from "shared/styles/utilities.module.scss";
+import utilities from "@/shared/styles/utilities.module.scss";
 
 const ERROR_TIMEOUT = 3000;
 
