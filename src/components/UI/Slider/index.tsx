@@ -1,4 +1,5 @@
 import { ChangeEvent, useCallback, useState } from "react";
+
 import styles from "./index.module.scss";
 
 interface SliderProps {
@@ -19,14 +20,7 @@ const Slider = ({ onChange }: SliderProps) => {
 
   return (
     <div className={styles.Slider}>
-      <input
-        type="range"
-        min="1"
-        max="4"
-        step="1"
-        defaultValue={value}
-        onChange={handleChange}
-      />
+      <input type="range" min="1" max="4" step="1" defaultValue={value} onChange={handleChange} />
       <output>{value}</output>
     </div>
   );

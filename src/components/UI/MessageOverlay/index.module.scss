@@ -1,8 +1,3 @@
-@import "shared/styles/_colors.scss";
-@import "shared/styles/_constants.scss";
-@import "shared/styles/_utilities.scss";
-@import "shared/styles/_breakpoints.scss";
-
 .ErrorOverlay {
   position: absolute;
   margin: auto;
@@ -13,15 +8,22 @@
   opacity: 0;
   height: fit-content;
   width: fit-content;
-  background-color: $color-amaranth;
-  font-size: rem(14px);
+  font-size: utilities.rem(14px);
   font-weight: bold;
-  color: $color-peppermint;
-  border-radius: $borderRadius;
+  border-radius: constants.$borderRadius;
   padding: 12px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+  color: constants.$color-peppermint;
 
-  @include tablet {
+  &--error {
+    background-color: constants.$color-amaranth;
+  }
+
+  &--success {
+    background-color: constants.$color-wadgewood;
+  }
+
+  @include utilities.tablet {
     bottom: 30px;
     top: unset;
     margin: unset auto;

@@ -1,4 +1,5 @@
 import React, { ChangeEvent, useCallback, useState } from "react";
+
 import styles from "./index.module.scss";
 
 export type PilledRadioGroupOption = {
@@ -12,11 +13,7 @@ interface PilledRadioGroupProps {
   handleChange: (value: string) => void;
 }
 
-const PilledRadioGroup = ({
-  optionsData,
-  defaultValue,
-  handleChange,
-}: PilledRadioGroupProps) => {
+const PilledRadioGroup = ({ optionsData, defaultValue, handleChange }: PilledRadioGroupProps) => {
   const [selectedValue, setSelectedValue] = useState<string>(defaultValue);
 
   const handleRadioChange = useCallback(

@@ -1,60 +1,64 @@
-import { AppContext } from "components/App";
 import {
   ChangeEvent,
+  InputHTMLAttributes,
   useCallback,
   useContext,
   useEffect,
   useMemo,
-  useState,
+  useState
 } from "react";
-import { ERROR, MEMBER } from "shared/enums";
-import { useClassNames } from "shared/hooks";
+
+import { AppContext } from "@/components/App";
+import { ERROR } from "@/shared/helpers/models";
+import { useClassNames } from "@/shared/hooks";
+
 import styles from "./index.module.scss";
 
-interface ValueBoxProps {
-  placeholder: string;
-  name: MEMBER;
-  value: string;
+interface ValueBoxProps extends InputHTMLAttributes<HTMLInputElement> {
   isResult: boolean;
   isFirst?: boolean;
   resultFound: boolean;
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  onClick: () => void;
 }
 
 const ValueBox = ({
   placeholder,
-  name,
   value,
   isResult,
   isFirst,
   resultFound,
   onChange,
+  onClick
 }: ValueBoxProps) => {
   const [invalid, setInvalid] = useState<boolean>(false);
   const classNames = useClassNames([
     styles.ValueBox,
     isResult ? styles["ValueBox--isResult"] : "",
     invalid ? styles["ValueBox--invalid"] : "",
-    resultFound ? styles["ValueBox--resultFound"] : "",
+    resultFound ? styles["ValueBox--resultFound"] : ""
   ]);
 
-  const { setDisplayedError } = useContext(AppContext);
+  const { setDisplayedMessage } = useContext(AppContext);
 
   const inputWidth = useMemo(
-    () => (value ? value.length + "ch" : "25px"),
+    () => (typeof value === "string" && value ? value.length + "ch" : "25px"),
     [value]
   );
 
   const handleChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
-      if (isNaN(+e.target.value)) {
+      let value = e.target.value;
+
+      if (value.includes(",")) value = value.replace(",", ".");
+      if (isNaN(+value)) {
         setInvalid(true);
-        setDisplayedError(ERROR.ONLY_NUMERIC);
+        setDisplayedMessage({ message: ERROR.ONLY_NUMERIC, type: "error" });
+        return;
       }
-      if (e.target.value.includes(",")) setDisplayedError(ERROR.INVALID_FLOAT);
-      onChange(e);
+
+      onChange && onChange(e);
     },
-    [onChange, setDisplayedError]
+    [onChange, setDisplayedMessage]
   );
 
   useEffect(() => {
@@ -64,16 +68,17 @@ const ValueBox = ({
 
   return (
     <input
-      type="text"
       className={classNames}
+      onClick={() => isResult && onClick()}
+      type="text"
+      inputMode="decimal"
       style={{ width: inputWidth }}
       value={value}
-      name={name}
       placeholder={placeholder}
       onChange={handleChange}
       autoComplete={"off"}
       autoFocus={isFirst}
-      disabled={isResult}
+      readOnly={isResult}
     />
   );
 };

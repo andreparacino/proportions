@@ -1,5 +1,31 @@
-@use "sass:math";
+@use "sass:math" as math;
+@use "sass:list" as list;
 
-@function rem($px) {
-  @return math.div($px, 16px) * 1rem;
+@function rem($values...) {
+  $rem-values: ();
+
+  @each $value in $values {
+    $rem-value: if(math.unit($value) == "px", math.div($value, 16px) * 1rem, $value);
+    $rem-values: list.append($rem-values, $rem-value);
+  }
+
+  @return $rem-values;
+}
+
+// BREAKPOINTS
+
+@mixin mobile {
+  @media (min-width: 576px) {
+    @content;
+  }
+}
+@mixin tablet {
+  @media (min-width: 768px) {
+    @content;
+  }
+}
+@mixin desktop {
+  @media (min-width: 992px) {
+    @content;
+  }
 }
