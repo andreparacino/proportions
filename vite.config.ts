@@ -24,5 +24,8 @@ export default defineConfig({
     alias: {
       "@": root
     } as AliasOptions
+  },
+  build: {
+    outDir: "build"
   }
 });
