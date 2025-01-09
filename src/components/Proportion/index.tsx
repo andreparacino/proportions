@@ -1,108 +1,37 @@
-import ValueBox from "components/UI/ValueBox";
-import {
-  ChangeEvent,
-  Fragment,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
-import { MATH_SYMBOL, MEMBER, VARIABLE_SYMBOL } from "shared/enums";
-import { evaluateProportion } from "shared/helpers/utilities";
+import { ChangeEvent, Fragment, useCallback, useState } from "react";
+
+import Slider from "@/components/UI/Slider";
+import ValueBox from "@/components/UI/ValueBox";
+import { DEFAULT_INPUTS } from "@/shared/helpers/constants";
+import { Input } from "@/shared/helpers/models";
+import { evaluatePlaceholders, getResult, getValuesArray } from "@/shared/helpers/utilities";
+import { useClipboard } from "@/shared/hooks";
+
 import styles from "./index.module.scss";
-import Slider from "components/UI/Slider";
-
-const { FIRST_MEMBER, SECOND_MEMBER, THIRD_MEMBER, FOURTH_MEMBER } = MEMBER;
-const members = Object.values(MEMBER);
-
-const { COLON, EQUAL } = MATH_SYMBOL;
-
-const { X, Y, Z, W } = VARIABLE_SYMBOL;
-const symbols = Object.values(VARIABLE_SYMBOL);
 
 const Proportion = () => {
-  const [values, setValues] = useState<{
-    [key in MEMBER]: string | null;
-  }>({
-    [FIRST_MEMBER]: null,
-    [SECOND_MEMBER]: null,
-    [THIRD_MEMBER]: null,
-    [FOURTH_MEMBER]: null,
-  });
-  const [placeholders, setPlaceholders] = useState<{
-    [key in MEMBER]: VARIABLE_SYMBOL;
-  }>({
-    [FIRST_MEMBER]: X,
-    [SECOND_MEMBER]: Y,
-    [THIRD_MEMBER]: Z,
-    [FOURTH_MEMBER]: W,
-  });
-
+  const [inputs, setInputs] = useState<Input[]>(DEFAULT_INPUTS);
   const [allowedDecimals, setAllowedDecimals] = useState(2);
 
-  const existingValues = useMemo(
-    () => Object.keys(values).filter((key) => !!values[key as MEMBER]),
-    [values]
-  );
+  const valuesArray = getValuesArray(inputs);
+  const totalFilledInputs = valuesArray.filter(Boolean).length;
+  const placeholders = evaluatePlaceholders(valuesArray);
+  const result = getResult(valuesArray, allowedDecimals);
 
-  const disabledInput = useMemo(
-    () => ({
-      isDisabled: existingValues.length === 3,
-      instance: Object.keys(values).find((key) => !values[key as MEMBER]),
-    }),
-    [existingValues.length, values]
-  );
+  const { copyToClipboard } = useClipboard(result);
 
-  const result = useMemo(() => {
-    if (!disabledInput.isDisabled) return null;
-    switch (disabledInput.instance) {
-      case FIRST_MEMBER:
-      case FOURTH_MEMBER:
-        return evaluateProportion({
-          toMultiply: [values[SECOND_MEMBER], values[THIRD_MEMBER]],
-          toDivide: [values[FIRST_MEMBER], values[FOURTH_MEMBER]],
-          precision: +allowedDecimals,
-        });
-      default:
-        return evaluateProportion({
-          toMultiply: [values[FIRST_MEMBER], values[FOURTH_MEMBER]],
-          toDivide: [values[SECOND_MEMBER], values[THIRD_MEMBER]],
-          precision: +allowedDecimals,
-        });
-    }
-  }, [
-    disabledInput.isDisabled,
-    disabledInput.instance,
-    values,
-    allowedDecimals,
-  ]);
-
-  const handleInput = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    const event = e.target;
-    const currentReference = event.name as MEMBER;
-    if (isNaN(+event.value) || !currentReference) return;
-    setValues((prev) => ({
-      ...prev,
-      [currentReference]: event.value,
-    }));
-  }, []);
-
-  useEffect(
-    () =>
-      // The placeholders assignment to the correct input needs to change based on the number and position of the existing values, so that theoretically the last unknown value is going to be the x.
-      members
-        .filter((member) => !existingValues?.includes(member))
-        .forEach((_member, index) => {
-          setPlaceholders((prev) => ({
-            ...prev,
-            [_member]: symbols[index],
-          }));
-        }),
-    [existingValues]
+  const handleInput = useCallback(
+    (e: ChangeEvent<HTMLInputElement>, index: number) =>
+      setInputs((prev) => {
+        const newInputs = [...prev];
+        newInputs[index].value = e.target.value;
+        return newInputs;
+      }),
+    []
   );
 
   return (
-    <section className={styles.Proportion} onChange={handleInput}>
+    <section className={styles.Proportion}>
       <section className={styles["Proportion-decimalsFilter"]}>
         <span>
           Precision (<strong>decimals</strong>):
@@ -110,24 +39,18 @@ const Proportion = () => {
         <Slider onChange={(value) => setAllowedDecimals(value)} />
       </section>
       <section className={styles["Proportion-europeanLayout"]}>
-        {members.map((member, index) => (
-          <Fragment key={member}>
+        {inputs.map((input, index) => (
+          <Fragment key={input.id}>
             <ValueBox
-              name={member}
-              value={values[member] || result?.toString() || ""}
-              isResult={
-                disabledInput.isDisabled && disabledInput.instance === member
-              }
+              value={input.value || result || ""}
+              isResult={!input.value && totalFilledInputs === 3}
               isFirst={index === 0}
-              resultFound={!!result || result === 0}
-              placeholder={placeholders[member]}
-              onChange={handleInput}
+              resultFound={!!result}
+              placeholder={placeholders[index]}
+              onChange={(e) => handleInput(e, index)}
+              onClick={copyToClipboard}
             />
-            {index !== 3 && (
-              <span style={{ fontSize: "2rem" }}>
-                {index === 1 ? EQUAL : COLON}
-              </span>
-            )}
+            {input.nextSymbol && <span style={{ fontSize: "2rem" }}>{input.nextSymbol}</span>}
           </Fragment>
         ))}
       </section>

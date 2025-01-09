@@ -1,30 +1,39 @@
-import Proportion from "components/Proportion";
-import ErrorOverlay from "components/UI/ErrorOverlay";
-import Logo from "components/UI/Logo";
 import React, { createContext, Dispatch } from "react";
 import { useState } from "react";
+
+import Proportion from "@/components/Proportion";
+import Logo from "@/components/UI/Logo";
+import MessageOverlay from "@/components/UI/MessageOverlay";
+
 import styles from "./index.module.scss";
 
-interface AppContextInterface {
-  displayedError: string | null;
-  setDisplayedError: Dispatch<React.SetStateAction<string | null>>;
-}
+type MessageType = "error" | "success";
+
+type Message = {
+  message: string;
+  type: MessageType;
+};
+
+type AppContextInterface = {
+  displayedMessage: Message | null;
+  setDisplayedMessage: Dispatch<React.SetStateAction<Message | null>>;
+};
 
 export const AppContext = createContext<AppContextInterface>({
-  displayedError: null,
-  setDisplayedError: () => {},
+  displayedMessage: null,
+  setDisplayedMessage: () => {}
 });
 
 function App() {
-  const [displayedError, setDisplayedError] = useState<string | null>(null);
-  const value = { displayedError, setDisplayedError };
+  const [displayedMessage, setDisplayedMessage] = useState<Message | null>(null);
+  const contextValue = { displayedMessage, setDisplayedMessage };
 
   return (
     <main className={styles.App}>
-      <AppContext.Provider value={value}>
+      <AppContext.Provider value={contextValue}>
         <Logo />
         <Proportion />
-        <ErrorOverlay />
+        <MessageOverlay />
       </AppContext.Provider>
     </main>
   );
