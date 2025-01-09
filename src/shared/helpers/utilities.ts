@@ -1,47 +1,54 @@
-import { MEMBER } from "@/shared/enums";
-import { DisabledInput, TypeOrNull } from "@/shared/helpers/types";
+import { SYMBOLS } from "@/shared/helpers/constants";
+import { Input, Maybe } from "@/shared/helpers/models";
 
-const { FIRST_MEMBER, SECOND_MEMBER, THIRD_MEMBER, FOURTH_MEMBER } = MEMBER;
+export const getValuesArray = (inputs: Input[]) => inputs.map((input) => input.value);
 
-// I chose to place this function here because of the possibility of implementing
-// different layouts/variants of the proportion component, so it could be shared between
-// instances of a similar logic.
-// The function takes two multiplying members and tries to divide the multiplication by
-// one of the two dividends (the correct function call is handled by a switch case in
-// Proportion/index.tsx).
-export const evaluateProportion = ({
-  toMultiply,
-  toDivide,
-  precision,
-}: {
-  toMultiply: [TypeOrNull<string>, TypeOrNull<string>];
-  toDivide: [TypeOrNull<string>, TypeOrNull<string>];
-  precision: number;
-}) =>
-  +(
-    (+(toMultiply[0] || "") * +(toMultiply[1] || "")) /
-    +(toDivide[0] || toDivide[1] || "")
-  ).toFixed(precision);
+export const evaluatePlaceholders = (valuesArray: Maybe<string>[]) => {
+  const placeholders: string[] = ["", "", "", ""];
+  let currentIndex = 0;
 
-export const getResult = (
-  disabledInput: DisabledInput,
-  values: Record<MEMBER, string | null>,
-  allowedDecimals: number
-) => {
-  if (!disabledInput.isDisabled) return null;
-  switch (disabledInput.instance) {
-    case FIRST_MEMBER:
-    case FOURTH_MEMBER:
-      return evaluateProportion({
-        toMultiply: [values[SECOND_MEMBER], values[THIRD_MEMBER]],
-        toDivide: [values[FIRST_MEMBER], values[FOURTH_MEMBER]],
-        precision: +allowedDecimals,
-      });
-    default:
-      return evaluateProportion({
-        toMultiply: [values[FIRST_MEMBER], values[FOURTH_MEMBER]],
-        toDivide: [values[SECOND_MEMBER], values[THIRD_MEMBER]],
-        precision: +allowedDecimals,
-      });
+  valuesArray.forEach((value, index) => {
+    if (value) return;
+
+    placeholders[index] = SYMBOLS[currentIndex];
+    currentIndex++;
+  });
+
+  return placeholders;
+};
+
+const toNumber = (value: Maybe<string>, defaultValue = "0") => +(value || defaultValue);
+
+const calculate = (
+  multiplier1: Maybe<string>,
+  multiplier2: Maybe<string>,
+  dividend: Maybe<string>,
+  fallBackDividend: Maybe<string>
+): number => {
+  const m1 = toNumber(multiplier1);
+  const m2 = toNumber(multiplier2);
+  const div = toNumber(dividend, fallBackDividend || undefined);
+
+  return (m1 * m2) / div;
+};
+
+export const getResult = (values: string[], allowedDecimals: number) => {
+  const [extreme1, middle1, middle2, extreme2] = values.map((value) => value.replace(",", "."));
+  const structure = JSON.stringify(values.map(Boolean));
+  let result: Maybe<number> = null;
+
+  switch (structure) {
+    case "[true,true,true,false]":
+    case "[false,true,true,true]":
+      result = calculate(middle1, middle2, extreme1, extreme2);
+      break;
+    case "[true,true,false,true]":
+    case "[true,false,true,true]":
+      result = calculate(extreme1, extreme2, middle1, middle2);
+      break;
   }
+
+  if (Number.isInteger(result)) return result?.toString() || "";
+
+  return result?.toFixed(allowedDecimals) || "";
 };

@@ -1,0 +1,31 @@
+.ErrorOverlay {
+  position: absolute;
+  margin: auto;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  opacity: 0;
+  height: fit-content;
+  width: fit-content;
+  font-size: utilities.rem(14px);
+  font-weight: bold;
+  border-radius: constants.$borderRadius;
+  padding: 12px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+  color: constants.$color-peppermint;
+
+  &--error {
+    background-color: constants.$color-amaranth;
+  }
+
+  &--success {
+    background-color: constants.$color-wadgewood;
+  }
+
+  @include utilities.tablet {
+    bottom: 30px;
+    top: unset;
+    margin: unset auto;
+  }
+}
