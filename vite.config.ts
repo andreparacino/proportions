@@ -12,11 +12,12 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       scss: {
+        silenceDeprecations: ["legacy-js-api"],
+        api: "modern",
         additionalData: `
           @use "./src/shared/styles/utilities" as utilities;
           @use "./src/shared/styles/constants" as constants;
-        `,
-        api: "modern-compiler"
+        `
       }
     }
   },
