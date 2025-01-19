@@ -79,6 +79,7 @@ const ValueBox = ({
       autoComplete={"off"}
       autoFocus={isFirst}
       readOnly={isResult}
+      onFocus={(e) => e.target.select()}
     />
   );
 };
